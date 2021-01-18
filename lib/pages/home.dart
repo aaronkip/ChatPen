@@ -9,10 +9,11 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool isAuth = false;
 
-  Widget buildAuthScreen(){
+  Widget buildAuthScreen() {
     return Text('Auth');
   }
-  Widget buildUnAuthScreen(){
+
+  Widget buildUnAuthScreen() {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -20,9 +21,9 @@ class _HomeState extends State<Home> {
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
             colors: [
-              Colors.teal,
-              Colors.purple
-            ]
+              Theme.of(context).accentColor,
+              Theme.of(context).primaryColor,
+            ],
           ),
         ),
         alignment: Alignment.center,
@@ -30,15 +31,16 @@ class _HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('ChatPen',
-            style: TextStyle(
-              fontFamily: 'Signatra',
-              fontSize: 90,
-              color: Colors.white,
-            ),
+            Text(
+              'ChatPen',
+              style: TextStyle(
+                fontFamily: 'Signatra',
+                fontSize: 90,
+                color: Colors.white,
+              ),
             ),
             GestureDetector(
-              onTap: ()=> print('tapped'),
+              onTap: () => print('tapped'),
               child: Container(
                 width: 260,
                 height: 60,
@@ -55,8 +57,9 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
-    return isAuth? buildAuthScreen() : buildUnAuthScreen();
+    return isAuth ? buildAuthScreen() : buildUnAuthScreen();
   }
 }
