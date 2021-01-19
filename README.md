@@ -1,6 +1,6 @@
-## ChatPen
+# ChatPen
 
-### Introduction
+## Introduction
 This is an open source social media application.
 It will have support for
 - Android,
@@ -8,4 +8,11 @@ It will have support for
 - Web
 platforms.
 
+## Proposed Features
+- Timelines
+- Media Upload
+- Chat
+- Activity Feed
+- Search
+- Profile
 Feel free to fork and make contributions...
