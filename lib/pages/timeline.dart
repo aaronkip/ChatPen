@@ -10,6 +10,11 @@ class Timeline extends StatefulWidget {
 
 class _TimelineState extends State<Timeline> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(context) {
     return Scaffold(
       appBar: header(context, isAppTitle: true),

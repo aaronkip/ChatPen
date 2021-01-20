@@ -1,14 +1,19 @@
+import 'dart:html';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'activity_feed.dart';
+import 'create_account.dart';
 import 'profile.dart';
 import 'search.dart';
-import 'timeline.dart';
 import 'upload.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
+final usersRef = Firestore.instance.collection('users');
+final DateTime timeStamp = DateTime.now();
 
 class Home extends StatefulWidget {
   @override
@@ -40,7 +45,7 @@ class _HomeState extends State<Home> {
 
   handleSignIn(GoogleSignInAccount account) {
     if (account != null) {
-      print('User signed in: $account');
+      createUSerinFirestore();
       setState(() {
         isAuth = true;
       });
@@ -78,11 +83,39 @@ class _HomeState extends State<Home> {
     );
   }
 
+  createUSerinFirestore() async {
+    //Check if user exists in collection
+    final GoogleSignInAccount user = googleSignIn.currentUser;
+    final DocumentSnapshot doc = await usersRef.document(user.id).get();
+
+    // If does not exist, take to create accont page
+    if (!doc.exists) {
+      final username = Navigator.push(
+          context, MaterialPageRoute(builder: (context) => CreateAccount()));
+
+      usersRef.document(user.id).setData({
+        'id': user.id,
+        'username': username,
+        'photoUrl': user.photoUrl,
+        'email': user.email,
+        'diaplayName': user.displayName,
+        'bio': '',
+        'timestamp': timeStamp
+      });
+    }
+
+    // get username in createAccount, and create new document in colection
+  }
+
   Scaffold buildAuthScreen() {
     return Scaffold(
       body: PageView(
         children: [
-          Timeline(),
+          //Timeline(), ///TODO: Design this Timeline age and get rid of RaisedButton
+          RaisedButton(
+            child: Text('Logout'),
+            onPressed: logout(),
+          ),
           ActivityFeed(),
           Upload(),
           Search(),
