@@ -1,3 +1,4 @@
+import 'package:chatpen/pages/timeline.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,8 @@ class _HomeState extends State<Home> {
     // Authenticate silently when user is signed in recently
     googleSignIn.signInSilently(suppressErrors: false).then((account) {
       handleSignIn(account);
+    }, onError: (err){
+      print('Error when silent signin: $err');
     });
   }
 
@@ -46,12 +49,14 @@ class _HomeState extends State<Home> {
       createUSerinFirestore();
       setState(() {
         isAuth = true;
+        print('User Account $account');
       });
-    } else {
+    } /*else {
       setState(() {
         isAuth = false;
+        print('No user data found!!!!');
       });
-    }
+    }*/
   }
 
   dispose() {
@@ -109,7 +114,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: PageView(
         children: [
-          //Timeline(), ///TODO: Design this Timeline age and get rid of RaisedButton
+          Timeline(),
           RaisedButton(
             child: Text('Logout'),
             onPressed: logout(),
