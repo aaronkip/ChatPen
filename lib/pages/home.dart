@@ -1,3 +1,4 @@
+import 'package:chatpen/models/user.dart';
 import 'package:chatpen/pages/timeline.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +14,7 @@ import 'upload.dart';
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final usersRef = Firestore.instance.collection('users');
 final DateTime timeStamp = DateTime.now();
+User currentUSer;
 
 class Home extends StatefulWidget {
   @override
@@ -39,7 +41,7 @@ class _HomeState extends State<Home> {
     // Authenticate silently when user is signed in recently
     googleSignIn.signInSilently(suppressErrors: false).then((account) {
       handleSignIn(account);
-    }, onError: (err){
+    }, onError: (err) {
       print('Error when silent signin: $err');
     });
   }
@@ -51,7 +53,8 @@ class _HomeState extends State<Home> {
         isAuth = true;
         print('User Account $account');
       });
-    } /*else {
+    }
+    /*else {
       setState(() {
         isAuth = false;
         print('No user data found!!!!');
@@ -89,7 +92,7 @@ class _HomeState extends State<Home> {
   createUSerinFirestore() async {
     //Check if user exists in collection
     final GoogleSignInAccount user = googleSignIn.currentUser;
-    final DocumentSnapshot doc = await usersRef.document(user.id).get();
+    DocumentSnapshot doc = await usersRef.document(user.id).get();
 
     // If does not exist, take to create accont page
     if (!doc.exists) {
@@ -105,7 +108,10 @@ class _HomeState extends State<Home> {
         'bio': '',
         'timestamp': timeStamp
       });
+      doc = await usersRef.document(user.id).get();
     }
+
+    currentUSer = User.fromDocument(doc);
 
     // get username in createAccount, and create new document in colection
   }
@@ -115,10 +121,6 @@ class _HomeState extends State<Home> {
       body: PageView(
         children: [
           Timeline(),
-          RaisedButton(
-            child: Text('Logout'),
-            onPressed: logout(),
-          ),
           ActivityFeed(),
           Upload(),
           Search(),
