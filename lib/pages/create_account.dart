@@ -8,18 +8,19 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
-  final _formkey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   String username;
 
   submit() {
-    _formkey.currentState.save();
+    _formKey.currentState.save();
     Navigator.pop(context, username);
   }
 
   @override
   Widget build(BuildContext parentContext) {
     return Scaffold(
-      appBar: header(context, titleText: "Set up your profile"),
+      appBar:
+          header(context, isAppTitle: true, titleText: "Set up your profile"),
       body: ListView(
         children: [
           Container(
@@ -38,7 +39,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   padding: EdgeInsets.all(16.0),
                   child: Container(
                     child: Form(
-                      key: _formkey,
+                      key: _formKey,
                       child: TextFormField(
                         onSaved: (val) => username = val,
                         decoration: InputDecoration(
@@ -51,12 +52,12 @@ class _CreateAccountState extends State<CreateAccount> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: submit(),
+                  onTap: submit,
                   child: Container(
                     height: 50.0,
                     width: 350.0,
                     decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: Colors.blue[700],
                       borderRadius: BorderRadius.circular(7.0),
                     ),
                     child: Center(
